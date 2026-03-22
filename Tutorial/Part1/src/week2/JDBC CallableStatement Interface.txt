@@ -1,0 +1,111 @@
+Microsoft Windows [Version 10.0.26200.7705]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\monis>mysql -u root -p
+Enter password: ***************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+// in parameter
+
+mysql> delimiter $$
+mysql> use subhamdb
+Database changed
+mysql> delimiter $$
+mysql> create procedure addEmployee(in eid int, in ename varchar(30), in esal double)
+    -> begin insert into emp values (eid, ename, esal); end $$
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter ;
+mysql> call addEmployee(102, 'Ravi', 45000.00);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from emp;
++-----+----------------+-------+
+| eno | ename          | esal  |
++-----+----------------+-------+
+|   1 | Animesh        | 20000 |
+|   2 | Mandal         | 30000 |
+|   3 | Animesh Mandal | 40000 |
+|   4 | amit           | 53000 |
+|   5 | amit           | 53000 |
+| 102 | Ravi           | 45000 |
++-----+----------------+-------+
+6 rows in set (0.00 sec)
+
+// out parameter
+
+mysql> delimiter $$
+mysql> create procedure getEmployee(in empid int, out salary double)
+    -> begin  select esal into salary from emp where eno = empid; end $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call getEmployee(102, @mu_salary);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @mu_salary;
++------------+
+| @mu_salary |
++------------+
+|      45000 |
++------------+
+1 row in set (0.00 sec)
+
+
+// in and out parameter
+
+mysql> delimiter $$
+mysql> create procedure updateSalary( in empid int, inout newsal double)
+    -> begin update emp set esal = newsal where eno = empid; end $$
+ERROR 1046 (3D000): No database selected
+mysql> begin update emp set esal = newsal where eno = empid; end$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'update emp set esal = newsal where eno = empid; end' at line 1
+mysql> use subhamdb
+Database changed
+mysql> delimiter $$
+mysql> create procedure updateSalary( in empid int, inout newsal double)
+    -> begin update emp set esal = newsal where eno = empid; end $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> set @new_sal = 99999.99;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call updateSalary(102, @new_sal);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select @my_salary;
++------------------------+
+| @my_salary             |
++------------------------+
+| NULL                   |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select @my_sal;
++------------------+
+| @my_sal          |
++------------------+
+| NULL             |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select @new_sal;
++----------+
+| @new_sal |
++----------+
+| 99999.99 |
++----------+
+1 row in set (0.00 sec)
+
+mysql>
