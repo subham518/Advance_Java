@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/hibernatedemodb</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">local@subham123</property>
+
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">true</property>
+
+        <property name="hbm2ddl.auto">update</property>
+
+<!--        for hibernatedemo folder-->
+        <mapping class="com.example.hibernatedemo.User"/>
+
+<!--        for OnetoOne folder-->
+        <mapping class="com.example.OnetoOne.Student"/>
+        <mapping class="com.example.OnetoOne.ID_Card"/>
+
+<!--        for ManytoMany folder-->
+        <mapping class="com.example.ManytoMany.Doctor"/>
+        <mapping class="com.example.ManytoMany.Patient"/>
+
+<!--        for Hqldemo-->
+        <mapping class="com.example.Hqldemo.Employee"/>
+
+    </session-factory>
+
+</hibernate-configuration>
+
+
+<!--Core Mapping Annotations
+@Entity: Marks a Java class as an entity, meaning it should be mapped to a database table.
+@Table: Specifies the name of the database table for the entity. If omitted, Hibernate uses the class name by default.
+@Id: Marks a field as the primary key of the entity.
+@GeneratedValue: Defines how the primary key value should be generated (e.g., AUTO, IDENTITY, SEQUENCE).
+@Column: Customises the mapping between a field and a table column (e.g., setting the column name, length, or nullability).
+@Transient: Instructs Hibernate to ignore a specific field so it is not saved to the database.
+
+Data Type & Formatting Annotations
+@Temporal: Specifies how java.util.Date or Calendar fields should be formatted in the database (e.g., DATE, TIME, or TIMESTAMP).
+@Lob: Indicates that a property should be stored as a Large Object (BLOB for binary data or CLOB for character data).
+@Enumerated: Used to persist Java enum types, either as an integer (ordinal) or a string.
+
+Relationship & Association Annotations
+@OneToOne: Defines a one-to-one relationship between two entities.
+@OneToMany: Defines a relationship where one entity is associated with a collection of other entities.
+@ManyToOne: Defines a relationship where many instances of an entity are associated with one instance of another entity.
+@ManyToMany: Defines a relationship where multiple instances of one entity are associated with multiple instances of another.
+@JoinColumn: Specifies the foreign key column used to join two entities.
+@JoinTable: Used primarily in many-to-many relationships to define a separate link table.
+
+Advanced Mapping Annotations
+@Embedded & @Embeddable: @Embeddable marks a class whose properties are stored as part of another entity, while @Embedded is used in the parent entity to include that class.
+@MappedSuperclass: Allows an entity to inherit properties from a base class without creating a separate table for that base class.
+@Version: Used for optimistic locking to prevent concurrent modification conflicts by tracking a version number.
+@OrderBy: Instructs Hibernate to sort a collection (e.g., a List in a one-to-many relationship) using a specific SQL order. -->
